@@ -33,8 +33,7 @@ public class User implements Serializable {
     @Column(nullable = false)
     private String lastName;
 
-    @Column
-    private String username = "@" + firstName + lastName;
+    private String username;
 
     private LocalDate dateCreated;
 

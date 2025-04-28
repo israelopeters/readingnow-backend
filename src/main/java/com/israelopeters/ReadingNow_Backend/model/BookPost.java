@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 
 @Entity(name = "books")
 @NoArgsConstructor
@@ -35,6 +36,8 @@ public class BookPost implements Serializable {
 
     @Column
     private ReadingStatus readingStatus;
+
+    private LocalDate dateCreated;
 
     public enum ReadingStatus {
         TBR,
