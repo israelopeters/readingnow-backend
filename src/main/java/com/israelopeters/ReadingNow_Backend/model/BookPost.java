@@ -38,11 +38,4 @@ public class BookPost implements Serializable {
     private ReadingStatus readingStatus;
 
     private LocalDate dateCreated;
-
-    public enum ReadingStatus {
-        TBR,
-        READING,
-        COMPLETED,
-        DROPPED
-    }
 }
