@@ -1,5 +1,6 @@
 package com.israelopeters.ReadingNow_Backend.service;
 
+import com.israelopeters.ReadingNow_Backend.exception.UserNotFoundException;
 import com.israelopeters.ReadingNow_Backend.model.User;
 import com.israelopeters.ReadingNow_Backend.model.dto.DtoMapper;
 import com.israelopeters.ReadingNow_Backend.model.dto.UserDto;
@@ -15,8 +16,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
@@ -50,7 +53,6 @@ class UserServiceImplTest {
 
         // Assert
         assertEquals(userListExpected, userListActual);
-
     }
 
     @Test
@@ -78,5 +80,34 @@ class UserServiceImplTest {
         assertEquals(1, userListActual.size());
         assertEquals("Israel", userListActual.getFirst().getFirstName());
         assertEquals(userListExpected, userListActual);
+    }
+
+    @Test
+    @DisplayName("getUserByEmail() throws an error when email is not in data store")
+    void getUserByEmailWhenUserIsNotInDataStore() {
+        // Arrange
+        when(userRepository.findByEmail("israel@email.com")).thenThrow(UserNotFoundException.class);
+
+        // Act and Assert
+        assertThrows(UserNotFoundException.class, () -> userServiceImpl.getUserByEmail("israel@email.com"));
+    }
+
+    @Test
+    @DisplayName("getUserByEmail() returns a UserDto object when email is in data store")
+    void getUserByEmailWhenUserIsInDataStore() {
+        // Arrange
+        User user = new User(1L, "israel@email.com", "password", "Israel",
+                "Peters", "@israelpeters", LocalDate.now(), List.of(), List.of());
+        UserDto userDtoExpected = new UserDto("israel@email.com", "Israel", "Peters",
+                "@israelpeters", List.of());
+
+        when(dtoMapper.toUserDto(user)).thenReturn(userDtoExpected);
+        when(userRepository.findByEmail("israel@email.com")).thenReturn(Optional.of(user));
+
+        // Act
+        UserDto userDtoActual = userServiceImpl.getUserByEmail("israel@email.com");
+
+        // Assert
+        assertEquals(userDtoExpected, userDtoActual);
     }
 }
