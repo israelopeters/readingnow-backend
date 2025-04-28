@@ -9,7 +9,7 @@ import lombok.Setter;
 import java.io.Serializable;
 import java.time.LocalDate;
 
-@Entity(name = "books")
+@Entity(name = "bookPost")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
