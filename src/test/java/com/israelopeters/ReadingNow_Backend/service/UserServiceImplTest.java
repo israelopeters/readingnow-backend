@@ -23,7 +23,9 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.times;
 
 @SpringBootTest
 class UserServiceImplTest {
@@ -86,7 +88,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    @DisplayName("getUserByEmail() throws an error when email is not in data store")
+    @DisplayName("getUserByEmail() throws a UserNotFoundException when email is not in data store")
     void getUserByEmailWhenUserIsNotInDataStore() {
         // Arrange
         when(userRepository.findByEmail("israel@email.com")).thenThrow(UserNotFoundException.class);
@@ -158,5 +160,33 @@ class UserServiceImplTest {
 
         //Assert
         assertEquals(userDtoExpected, userCreationDtoActual);
+    }
+
+    @Test
+    @DisplayName(("deleteUser() throws a UserNotFound exception"))
+    void deleteUserWhenUserDoesNotExist() {
+        //Arrange
+        // Return an empty Optional because the check for whether user exists must be false for user to be added
+        when(userRepository.findById(1L)).thenReturn(Optional.empty());
+
+        //Act and Assert
+        assertThrows(UserNotFoundException.class, ()-> userServiceImpl.deleteUserById(1L));
+    }
+
+    @Test
+    @DisplayName(("deleteUser() calls UserRepository's delete method once"))
+    void deleteUserWhenUserExists() {
+        //Arrange
+        User existingUser = new User(1L, "israel@email.com", "password", "Israel",
+                "Peters", "@israelpeters", LocalDate.now(), List.of(), List.of());
+
+        when(userRepository.findById(1L)).thenReturn(Optional.of(existingUser));
+        doNothing().when(userRepository).deleteById(isA(Long.class));
+
+        //Act
+        userServiceImpl.deleteUserById(1L);
+
+        // Assert
+        verify(userRepository, times(1)).deleteById(1L);
     }
 }
