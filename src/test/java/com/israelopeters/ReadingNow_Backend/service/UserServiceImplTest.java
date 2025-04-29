@@ -1,8 +1,11 @@
 package com.israelopeters.ReadingNow_Backend.service;
 
+import com.israelopeters.ReadingNow_Backend.exception.UserAlreadyExistsException;
 import com.israelopeters.ReadingNow_Backend.exception.UserNotFoundException;
+import com.israelopeters.ReadingNow_Backend.model.Role;
 import com.israelopeters.ReadingNow_Backend.model.User;
 import com.israelopeters.ReadingNow_Backend.model.dto.DtoMapper;
+import com.israelopeters.ReadingNow_Backend.model.dto.UserCreationDto;
 import com.israelopeters.ReadingNow_Backend.model.dto.UserDto;
 import com.israelopeters.ReadingNow_Backend.repository.RoleRepository;
 import com.israelopeters.ReadingNow_Backend.repository.UserRepository;
@@ -109,5 +112,51 @@ class UserServiceImplTest {
 
         // Assert
         assertEquals(userDtoExpected, userDtoActual);
+    }
+
+    @Test
+    @DisplayName("addUser() throws a UserAlreadyExistsException")
+    void addUserWhenUserAlreadyExists() {
+        //Arrange
+        UserCreationDto userCreationDto = new UserCreationDto(
+                "israel@email.com", "password", "Israel", "Peters",
+                "@israelpeters");
+
+        when(userRepository.findByEmail(userCreationDto.getEmail()))
+                .thenThrow(new UserAlreadyExistsException("User already exists!"));
+
+        //Act and Assert
+        assertThrows(UserAlreadyExistsException.class, () -> userServiceImpl.addUser(userCreationDto));
+    }
+
+    @Test
+    @DisplayName("addUser() returns userDto mapped from persisted user")
+    void addUserWhenUserDoesNotYetExist() {
+        //Arrange
+        User user = new User(1L, "israel@email.com", "password", "Israel",
+                "Peters", "@israelpeters", LocalDate.now(), List.of(), List.of());
+        UserCreationDto userCreationDto = new UserCreationDto(
+                "israel@email.com", "password", "Israel", "Peters",
+                "@israelpeters");
+        UserDto userDtoExpected = new UserDto("israel@email.com", "Israel", "Peters",
+                "@israelpeters", List.of());
+
+        Role role = new Role();
+        role.setId(1L);
+        role.setName("ROLE_USER");
+
+        // Return an empty Optional because the check for whether user exists must be false for user to be added
+        when(userRepository.findByEmail(userCreationDto.getEmail())).thenReturn(Optional.empty());
+        when(dtoMapper.toUser(userCreationDto)).thenReturn(user);
+        when(passwordEncoder.encode(userCreationDto.getPassword())).thenReturn("encoded_password");
+        when(roleRepository.save(role)).thenReturn(role);
+        when(userRepository.save(user)).thenReturn(user);
+        when(dtoMapper.toUserDto(user)).thenReturn(userDtoExpected);
+
+        //Act
+        UserDto userCreationDtoActual = userServiceImpl.addUser(userCreationDto);
+
+        //Assert
+        assertEquals(userDtoExpected, userCreationDtoActual);
     }
 }
