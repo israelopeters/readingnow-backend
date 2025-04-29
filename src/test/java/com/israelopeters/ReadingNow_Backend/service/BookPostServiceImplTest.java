@@ -1,5 +1,6 @@
 package com.israelopeters.ReadingNow_Backend.service;
 
+import com.israelopeters.ReadingNow_Backend.exception.BookPostNotFoundException;
 import com.israelopeters.ReadingNow_Backend.model.BookPost;
 import com.israelopeters.ReadingNow_Backend.model.ReadingStatus;
 import com.israelopeters.ReadingNow_Backend.model.User;
@@ -15,6 +16,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
@@ -75,7 +77,29 @@ class BookPostServiceImplTest {
     }
 
     @Test
-    void getBookPostById() {
+    @DisplayName("getBookPostById() throws a BookNotFoundException when book post id does not exist in data store")
+    void getBookPostByIdWhenBookPostDoesNotExist() {
+        // Arrange
+        when(bookPostRepository.findById(1L)).thenThrow(BookPostNotFoundException.class);
+
+        // Act and assert
+        assertThrows(BookPostNotFoundException.class, () -> bookPostService.getBookPostById(1L));
+    }
+
+    @Test
+    @DisplayName("getBookPostById() returns a BookPost object when book exists in data store")
+    void getBookPostByIdWhenBookPostExists() {
+        // Arrange
+        BookPost bookPostExpected = new BookPost(70L, "image_url_one", "Book Author 1", new User(),
+                130L, "I hear this is a very good book", ReadingStatus.TBR, LocalDate.now());
+
+        when(bookPostRepository.findById(1L)).thenReturn(Optional.of(bookPostExpected));
+
+        // Act
+        BookPost bookPostActual = bookPostService.getBookPostById(1L);
+
+        // Assert
+        assertEquals(bookPostExpected, bookPostActual);
     }
 
     @Test
