@@ -3,7 +3,6 @@ package com.israelopeters.ReadingNow_Backend.service;
 import com.israelopeters.ReadingNow_Backend.exception.BookPostNotFoundException;
 import com.israelopeters.ReadingNow_Backend.exception.UserNotFoundException;
 import com.israelopeters.ReadingNow_Backend.model.BookPost;
-import com.israelopeters.ReadingNow_Backend.model.User;
 import com.israelopeters.ReadingNow_Backend.repository.BookPostRepository;
 import com.israelopeters.ReadingNow_Backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
