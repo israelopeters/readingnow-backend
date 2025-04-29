@@ -1,40 +1,30 @@
-package com.israelopeters.ReadingNow_Backend.model;
+package com.israelopeters.ReadingNow_Backend.model.dto;
 
-import jakarta.persistence.*;
+import com.israelopeters.ReadingNow_Backend.model.ReadingStatus;
+import com.israelopeters.ReadingNow_Backend.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.io.Serializable;
 import java.time.LocalDate;
 
-@Entity(name = "bookPost")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-public class BookPost implements Serializable {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class BookPostDto {
 
-    @Column
     private String imageUrl;
 
-    @Column
     private String bookAuthor;
 
-    @Column
     private User userAuthor;
 
-    @Column
     private Long numberOfPages;
 
-    @Column
     private String bookSummary;
 
-    @Column
     private ReadingStatus readingStatus;
 
     private LocalDate dateCreated;
