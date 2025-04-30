@@ -22,7 +22,7 @@ public class UserController {
         return new ResponseEntity<>(userService.getAllUsers(), HttpStatus.OK);
     }
 
-    @GetMapping("/{email}")
+    @GetMapping("/email/{email}")
     public ResponseEntity<UserDto> getUserByEmail(@RequestParam("email") String email) {
         return new ResponseEntity<>(userService.getUserByEmail(email), HttpStatus.OK);
     }

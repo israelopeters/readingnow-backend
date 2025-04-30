@@ -1,5 +1,6 @@
 package com.israelopeters.ReadingNow_Backend.service;
 
+import com.israelopeters.ReadingNow_Backend.exception.InvalidUserException;
 import com.israelopeters.ReadingNow_Backend.exception.UserAlreadyExistsException;
 import com.israelopeters.ReadingNow_Backend.exception.UserNotFoundException;
 import com.israelopeters.ReadingNow_Backend.model.Role;
@@ -54,6 +55,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto addUser(UserCreationDto userCreationDto) {
+        // Check whether user is valid
+        if (!isValidUser(userCreationDto)) {
+            throw new InvalidUserException("Invalid user!");
+        }
+
         // Check whether user already exists
         Optional<User> userCheck = userRepository.findByEmail(userCreationDto.getEmail());
         if (userCheck.isPresent()) {
@@ -89,5 +95,12 @@ public class UserServiceImpl implements UserService {
         Role role = new Role();
         role.setName("ROLE_USER");
         return roleRepository.save(role);
+    }
+
+    private boolean isValidUser(UserCreationDto userCreationDto) {
+        return !userCreationDto.getFirstName().isBlank()
+                & !userCreationDto.getLastName().isBlank()
+                & !userCreationDto.getEmail().isBlank()
+                & !userCreationDto.getPassword().isBlank();
     }
 }

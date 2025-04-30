@@ -1,5 +1,6 @@
 package com.israelopeters.ReadingNow_Backend.service;
 
+import com.israelopeters.ReadingNow_Backend.exception.InvalidUserException;
 import com.israelopeters.ReadingNow_Backend.exception.UserAlreadyExistsException;
 import com.israelopeters.ReadingNow_Backend.exception.UserNotFoundException;
 import com.israelopeters.ReadingNow_Backend.model.Role;
@@ -121,7 +122,7 @@ class UserServiceImplTest {
     void addUserWhenUserAlreadyExists() {
         //Arrange
         UserCreationDto userCreationDto = new UserCreationDto(
-                "israel@email.com", "password", "Israel", "Peters",
+                "Israel", "Peters", "israel@email.com", "password",
                 "@israelpeters");
 
         when(userRepository.findByEmail(userCreationDto.getEmail()))
@@ -132,13 +133,61 @@ class UserServiceImplTest {
     }
 
     @Test
+    @DisplayName("addUser() throws an InvalidUserException when email field is blank")
+    void addUserWhenUserEmailIsBlank() {
+        //Arrange
+        UserCreationDto userCreationDto = new UserCreationDto(
+                "Israel", "Peters", "", "password",
+                "@israelpeters");
+
+        //Act and Assert
+        assertThrows(InvalidUserException.class, () -> userServiceImpl.addUser(userCreationDto));
+    }
+
+    @Test
+    @DisplayName("addUser() throws an InvalidUserException when password field is blank")
+    void addUserWhenUserPasswordIsBlank() {
+        //Arrange
+        UserCreationDto userCreationDto = new UserCreationDto(
+                "Israel", "Peters", "israel@email.com", "",
+                "@israelpeters");
+
+        //Act and Assert
+        assertThrows(InvalidUserException.class, () -> userServiceImpl.addUser(userCreationDto));
+    }
+
+    @Test
+    @DisplayName("addUser() throws an InvalidUserException when first name field is blank")
+    void addUserWhenUserFirstNameIsBlank() {
+        //Arrange
+        UserCreationDto userCreationDto = new UserCreationDto(
+                " ", "Peters", "israel@email.com", "password",
+                "@israelpeters");
+
+        //Act and Assert
+        assertThrows(InvalidUserException.class, () -> userServiceImpl.addUser(userCreationDto));
+    }
+
+    @Test
+    @DisplayName("addUser() throws an InvalidUserException when last name field is blank")
+    void addUserWhenUserLastNameIsBlank() {
+        //Arrange
+        UserCreationDto userCreationDto = new UserCreationDto(
+                "Israel", " ", "israel@email.com", "password",
+                "@israelpeters");
+
+        //Act and Assert
+        assertThrows(InvalidUserException.class, () -> userServiceImpl.addUser(userCreationDto));
+    }
+
+    @Test
     @DisplayName("addUser() returns userDto mapped from persisted user")
     void addUserWhenUserDoesNotYetExist() {
         //Arrange
         User user = new User(1L, "israel@email.com", "password", "Israel",
                 "Peters", "@israelpeters", LocalDate.now(), List.of(), List.of());
         UserCreationDto userCreationDto = new UserCreationDto(
-                "israel@email.com", "password", "Israel", "Peters",
+                "Israel", "Peters", "israel@email.com", "password",
                 "@israelpeters");
         UserDto userDtoExpected = new UserDto("israel@email.com", "Israel", "Peters",
                 "@israelpeters", List.of());
