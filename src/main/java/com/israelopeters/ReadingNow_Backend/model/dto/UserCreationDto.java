@@ -24,7 +24,6 @@ public class UserCreationDto {
     @NonNull
     private String password;
 
-    @NonNull
     private String username;
 }
 

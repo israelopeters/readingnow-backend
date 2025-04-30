@@ -15,7 +15,11 @@ public class DtoMapper {
         user.setPassword(userCreationDto.getPassword());
 
         if (userCreationDto.getUsername() == null) {
-            user.setUsername("@" + userCreationDto.getFirstName() + userCreationDto.getLastName());
+            user.setUsername("@" +
+                    userCreationDto.getFirstName().toLowerCase() +
+                    userCreationDto.getLastName().toLowerCase());
+        } else {
+            user.setUsername("@" + userCreationDto.getUsername());
         }
         return user;
     }
