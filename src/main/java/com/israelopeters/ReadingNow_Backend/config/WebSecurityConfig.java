@@ -30,9 +30,10 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/api/v1/users/add")
+                        .requestMatchers("/api/v1/users/add", "/docs", "/swagger-ui/*",
+                                "/v3/api-docs/*", "/v3/api-docs")
                         .permitAll()
-                        .requestMatchers("/users/delete**").hasRole("ADMIN")
+                        .requestMatchers("/users/delete*").hasRole("ADMIN")
                         .anyRequest().authenticated())
                 .httpBasic(Customizer.withDefaults())
                 .securityContext((securityContext) -> securityContext
