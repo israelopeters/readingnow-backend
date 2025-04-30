@@ -1,6 +1,7 @@
 package com.israelopeters.ReadingNow_Backend.service;
 
 import com.israelopeters.ReadingNow_Backend.exception.BookPostNotFoundException;
+import com.israelopeters.ReadingNow_Backend.exception.UserNotFoundException;
 import com.israelopeters.ReadingNow_Backend.model.BookPost;
 import com.israelopeters.ReadingNow_Backend.model.ReadingStatus;
 import com.israelopeters.ReadingNow_Backend.model.User;
@@ -52,10 +53,10 @@ class BookPostServiceImplTest {
     void getAllBookPostsWhenBookPostTableIsNotEmpty() {
         //Arrange
         User userOne = new User();
-        userOne.setEmail("userOne@email");
+        userOne.setEmail("userOne@email.com");
 
         User userTwo = new User();
-        userOne.setEmail("userTwo@email");
+        userOne.setEmail("userTwo@email.com");
 
         BookPost bookOne = new BookPost(70L, "image_url_one", "Book Author 1", userOne,
                 130L, "I hear this is a very good book", ReadingStatus.TBR, LocalDate.now());
@@ -103,6 +104,50 @@ class BookPostServiceImplTest {
     }
 
     @Test
-    void getBookPostsByUser() {
+    @DisplayName("getBookPostsByUser() throws a UserNotFoundException when user does not exist")
+    void getBookPostsByUserWhenUserDoesNotExist() {
+        //Arrange
+        when(userRepository.findByEmail("userone@email.com")).thenReturn(Optional.empty());
+
+        // Act and assert
+        assertThrows(UserNotFoundException.class, () -> bookPostService.getBookPostsByUser("userone@email.com"));
+    }
+
+    @Test
+    @DisplayName("getBookPostsByUser() returns a list of book posts belonging to given user")
+    void getBookPostsByUserWhenUserExists() {
+        // Arrange
+        User userOne = new User();
+        userOne.setEmail("userone@email.com");
+
+        User userTwo = new User();
+        userTwo.setEmail("usertwo@email.com");
+
+        User userThree = new User();
+        userThree.setEmail("userthree@email.com");
+
+        BookPost bookOne = new BookPost(70L, "image_url_one", "Book Author 1", userOne,
+                130L, "I hear this is a very good book", ReadingStatus.TBR, LocalDate.now());
+        BookPost bookTwo = new BookPost(23L, "image_url_two", "Book Author 2", userTwo,
+                338L, "I am just loving every bit of this amazing book",
+                ReadingStatus.READING, LocalDate.now());
+        BookPost bookThree = new BookPost(43L, "image_url_three", "Book Author 3", userOne,
+                105L, "Enjoyed this one!",
+                ReadingStatus.COMPLETED, LocalDate.now());
+        BookPost bookFour = new BookPost(55L, "image_url_four", "Book Author 4", userThree,
+                220L, "I can't seem to be getting enough of this.",
+                ReadingStatus.READING, LocalDate.now());
+
+        List<BookPost> bookPostListAll = new ArrayList<>(List.of(bookOne, bookTwo, bookThree, bookFour));
+        List<BookPost> bookPostListExpected = new ArrayList<>(List.of(bookOne, bookThree));
+
+        when(bookPostRepository.findAll()).thenReturn(bookPostListAll);
+        when(userRepository.findByEmail("userone@email.com")).thenReturn(Optional.of(userOne));
+
+        // Act
+        List<BookPost> bookPostListActual = bookPostService.getBookPostsByUser("userone@email.com");
+
+        // Assert
+        assertEquals(bookPostListExpected, bookPostListActual);
     }
 }
