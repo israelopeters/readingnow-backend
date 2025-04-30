@@ -72,13 +72,14 @@ public class UserServiceImpl implements UserService {
         }
 
         // Create user roles
-        Role role = assignRole();
-        ArrayList<Role> roles = new ArrayList<>();
-        roles.add(role);
+        Role role = roleRepository.findByName("ROLE_USER");
+        if (role == null) {
+            role = assignRole();
+        }
 
         // Update unmodified fields and encrypt password
         User user = dtoMapper.toUser(userCreationDto);
-        user.setRoles(roles);
+        user.setRoles(List.of(role));
         user.setPassword(passwordEncoder.encode(userCreationDto.getPassword()));
         user.setDateCreated(LocalDate.now());
 
