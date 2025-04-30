@@ -56,8 +56,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto addUser(UserCreationDto userCreationDto) {
         // Check whether user is valid
-        if (!isValidUser(userCreationDto)) {
-            throw new InvalidUserException("Invalid user!");
+        try {
+            if (!isValidUser(userCreationDto)) {
+                throw new InvalidUserException("Invalid user!");
+            }
+        } catch (NullPointerException ignored) {
+            // Exception handling for when a user sends an invalid (non-UserCreationDto) request body to the endpoint
+            throw new NullPointerException("Invalid user!");
         }
 
         // Check whether user already exists
