@@ -32,4 +32,9 @@ public class UserController {
         return new ResponseEntity<>(userService.addUser(userCreationDto), HttpStatus.CREATED);
     }
 
+    @DeleteMapping("/delete{id}")
+    public ResponseEntity<Void> deleteUserById(@RequestParam("id") Long id) {
+        userService.deleteUserById(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }
