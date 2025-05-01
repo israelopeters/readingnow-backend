@@ -48,7 +48,7 @@ class UserServiceImplTest {
 
     @Test
     @DisplayName("getAllUsers() returns empty list")
-    void getAllUsersWhenUserTableIsEmpty() {
+    void getAllUsers_whenUserTableIsEmpty_returnsEmptyList() {
         // Arrange
         List<User> userListRepository = List.of();
         List<UserDto> userListExpected = List.of();
@@ -63,7 +63,7 @@ class UserServiceImplTest {
 
     @Test
     @DisplayName("getAllUsers() returns a non-empty list")
-    void getAllUsersWhenUserTableIsNotEmpty() {
+    void getAllUsers_whenUserTableIsNotEmpty_returnsListOfPersistedUsers() {
         // Arrange
         User user = new User(1L, "israel@email.com", "password", "Israel",
                 "Peters", "@israelpeters", LocalDate.now(), List.of(), List.of());
@@ -90,7 +90,7 @@ class UserServiceImplTest {
 
     @Test
     @DisplayName("getUserByEmail() throws a UserNotFoundException when email is not in data store")
-    void getUserByEmailWhenUserIsNotInDataStore() {
+    void getUserByEmail_whenUserIsNotInDataStore_throwsUserNotFoundException() {
         // Arrange
         when(userRepository.findByEmail("israel@email.com")).thenThrow(UserNotFoundException.class);
 
@@ -100,7 +100,7 @@ class UserServiceImplTest {
 
     @Test
     @DisplayName("getUserByEmail() returns a UserDto object when email is in data store")
-    void getUserByEmailWhenUserIsInDataStore() {
+    void getUserByEmail_whenUserIsInDataStore_returnsUserWithGivenEmail() {
         // Arrange
         User user = new User(1L, "israel@email.com", "password", "Israel",
                 "Peters", "@israelpeters", LocalDate.now(), List.of(), List.of());
@@ -119,7 +119,7 @@ class UserServiceImplTest {
 
     @Test
     @DisplayName("addUser() throws a UserAlreadyExistsException")
-    void addUserWhenUserAlreadyExists() {
+    void addUser_whenUserAlreadyExists_throwsUserAlreadyExistsException() {
         //Arrange
         UserCreationDto userCreationDto = new UserCreationDto(
                 "Israel", "Peters", "israel@email.com", "password",
@@ -134,7 +134,7 @@ class UserServiceImplTest {
 
     @Test
     @DisplayName("addUser() throws an InvalidUserException when email field is blank")
-    void addUserWhenUserEmailIsBlank() {
+    void addUser_whenUserEmailIsBlank_throwsInvalidUserException() {
         //Arrange
         UserCreationDto userCreationDto = new UserCreationDto(
                 "Israel", "Peters", "", "password",
@@ -146,7 +146,7 @@ class UserServiceImplTest {
 
     @Test
     @DisplayName("addUser() throws an InvalidUserException when password field is blank")
-    void addUserWhenUserPasswordIsBlank() {
+    void addUser_whenUserPasswordIsBlank_throwsInvalidUserException() {
         //Arrange
         UserCreationDto userCreationDto = new UserCreationDto(
                 "Israel", "Peters", "israel@email.com", "",
@@ -158,7 +158,7 @@ class UserServiceImplTest {
 
     @Test
     @DisplayName("addUser() throws an InvalidUserException when first name field is blank")
-    void addUserWhenUserFirstNameIsBlank() {
+    void addUser_whenUserFirstNameIsBlank_throwsInvalidUserException() {
         //Arrange
         UserCreationDto userCreationDto = new UserCreationDto(
                 " ", "Peters", "israel@email.com", "password",
@@ -170,7 +170,7 @@ class UserServiceImplTest {
 
     @Test
     @DisplayName("addUser() throws an InvalidUserException when last name field is blank")
-    void addUserWhenUserLastNameIsBlank() {
+    void addUser_whenUserLastNameIsBlank_throwsInvalidUserException() {
         //Arrange
         UserCreationDto userCreationDto = new UserCreationDto(
                 "Israel", " ", "israel@email.com", "password",
@@ -182,7 +182,7 @@ class UserServiceImplTest {
 
     @Test
     @DisplayName("addUser() returns userDto mapped from persisted user")
-    void addUserWhenUserDoesNotYetExist() {
+    void addUser_whenUserDoesNotYetExist_returnsUserDtoObjectOfPersistedUser() {
         //Arrange
         User user = new User(1L, "israel@email.com", "password", "Israel",
                 "Peters", "@israelpeters", LocalDate.now(), List.of(), List.of());
@@ -213,7 +213,7 @@ class UserServiceImplTest {
 
     @Test
     @DisplayName(("deleteUser() throws a UserNotFound exception"))
-    void deleteUserWhenUserDoesNotExist() {
+    void deleteUser_whenUserDoesNotExist_throwsUserNotFoundException() {
         //Arrange
         // Return an empty Optional because the check for whether user exists must be false for user to be added
         when(userRepository.findById(1L)).thenReturn(Optional.empty());
@@ -224,7 +224,7 @@ class UserServiceImplTest {
 
     @Test
     @DisplayName(("deleteUser() calls UserRepository's delete method once"))
-    void deleteUserWhenUserExists() {
+    void deleteUser_whenUserExists_callsRepositoryDeleteMethodOnce() {
         //Arrange
         User existingUser = new User(1L, "israel@email.com", "password", "Israel",
                 "Peters", "@israelpeters", LocalDate.now(), List.of(), List.of());

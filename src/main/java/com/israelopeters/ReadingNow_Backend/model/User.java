@@ -39,6 +39,7 @@ public class User implements Serializable {
 
     private List<BookPost> tbr =  new ArrayList<>();
 
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_roles",
