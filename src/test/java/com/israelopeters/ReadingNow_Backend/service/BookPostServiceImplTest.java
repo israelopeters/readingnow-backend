@@ -35,7 +35,7 @@ class BookPostServiceImplTest {
 
     @Test
     @DisplayName("getAllBookPosts() returns an empty list when book post table is empty")
-    void getAllBookPostsWhenBookPostTableIsEmpty() {
+    void getAllBookPosts_whenBookPostTableIsEmpty_returnsAnEmptyList() {
         //Arrange
         List<BookPost> bookPostListExpected = List.of();
         when(bookPostRepository.findAll()).thenReturn(bookPostListExpected);
@@ -49,7 +49,7 @@ class BookPostServiceImplTest {
 
     @Test
     @DisplayName("getAllBookPosts() returns a list of book posts when the table is not empty")
-    void getAllBookPostsWhenBookPostTableIsNotEmpty() {
+    void getAllBookPosts_whenBookPostTableIsNotEmpty_returnsAListOfAvailableBooks() {
         //Arrange
         User userOne = new User();
         userOne.setEmail("userOne@email.com");
@@ -78,7 +78,7 @@ class BookPostServiceImplTest {
 
     @Test
     @DisplayName("getBookPostById() throws a BookNotFoundException when book post id does not exist in data store")
-    void getBookPostByIdWhenBookPostDoesNotExist() {
+    void getBookPostById_whenBookPostDoesNotExist_throwsBookPostNotFoundException() {
         // Arrange
         when(bookPostRepository.findById(1L)).thenThrow(BookPostNotFoundException.class);
 
@@ -88,7 +88,7 @@ class BookPostServiceImplTest {
 
     @Test
     @DisplayName("getBookPostById() returns a BookPost object when book exists in data store")
-    void getBookPostByIdWhenBookPostExists() {
+    void getBookPostById_whenBookPostIdExists_returnsBookPostObject() {
         // Arrange
         BookPost bookPostExpected = new BookPost(70L, "image_url_one", "Book Author 1", new User(),
                 130L, "I hear this is a very good book", ReadingStatus.TBR, LocalDate.now());
@@ -104,7 +104,7 @@ class BookPostServiceImplTest {
 
     @Test
     @DisplayName("getBookPostsByUser() throws a UserNotFoundException when user does not exist")
-    void getBookPostsByUserWhenUserDoesNotExist() {
+    void getBookPostsByUser_whenUserDoesNotExist_throwsUserNotFoundException() {
         //Arrange
         when(userRepository.findByEmail("userone@email.com")).thenReturn(Optional.empty());
 
@@ -114,7 +114,7 @@ class BookPostServiceImplTest {
 
     @Test
     @DisplayName("getBookPostsByUser() returns a list of book posts belonging to given user")
-    void getBookPostsByUserWhenUserExists() {
+    void getBookPostsByUser_whenUserExists_returnsListOfBookPostsByUser() {
         // Arrange
         User userOne = new User();
         userOne.setEmail("userone@email.com");
