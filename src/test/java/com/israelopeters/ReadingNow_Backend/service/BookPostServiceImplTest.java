@@ -7,6 +7,7 @@ import com.israelopeters.ReadingNow_Backend.model.BookPost;
 import com.israelopeters.ReadingNow_Backend.model.ReadingStatus;
 import com.israelopeters.ReadingNow_Backend.model.User;
 import com.israelopeters.ReadingNow_Backend.model.dto.BookPostCreationDto;
+import com.israelopeters.ReadingNow_Backend.model.dto.DtoMapper;
 import com.israelopeters.ReadingNow_Backend.repository.BookPostRepository;
 import com.israelopeters.ReadingNow_Backend.repository.UserRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -14,6 +15,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.security.core.Authentication;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -31,6 +33,12 @@ class BookPostServiceImplTest {
 
     @Mock
     UserRepository userRepository;
+
+    @Mock
+    DtoMapper mapper;
+
+    @Mock
+    Authentication authentication;
 
     @InjectMocks
     BookPostServiceImpl bookPostService;
@@ -197,4 +205,28 @@ class BookPostServiceImplTest {
         // Act and assert
         assertThrows(InvalidBookPostException.class, () -> bookPostService.addBookPost(bookPostCreationDto));
     }
+
+    // TODO: Write unit test for "addBookPost() returns BookPost object when input book post is valid"
+//    @Test
+//    @DisplayName("addBookPost() returns BookPost object when input book post is valid")
+//    void addBookPost_whenInputBookPostIsValid_returnsBookPostOfPersistedBook() {
+//        // Arrange
+//        User user = new User();
+//        user.setEmail("userOne@email.com");
+//        BookPostCreationDto bookPostCreationDto = new BookPostCreationDto("image_url",
+//                "Book Author",130L, "I hear this is a very good book",
+//                ReadingStatus.TBR);
+//        BookPost bookPostExpected = new BookPost(1L, "image_url","Book Author", user,
+//                130L, "I hear this is a very good book", ReadingStatus.TBR, LocalDate.now());
+//
+//        when(mapper.toBookPost(bookPostCreationDto)).thenReturn(bookPostExpected);
+//        when(bookPostService.getAuthenticatedUser()).thenReturn(user); // Throwing null pointer exception for Authentication
+//        when(bookPostRepository.save(bookPostExpected)).thenReturn(bookPostExpected);
+//
+//        // Act
+//        BookPost bookPostActual = bookPostService.addBookPost(bookPostCreationDto);
+//
+//        // Assert
+//        assertEquals(bookPostExpected, bookPostActual);
+//    }
 }

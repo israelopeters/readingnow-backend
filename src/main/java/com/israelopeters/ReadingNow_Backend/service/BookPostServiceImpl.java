@@ -30,6 +30,9 @@ public class BookPostServiceImpl implements BookPostService {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    DtoMapper mapper;
+
     @Override
     public List<BookPost> getAllBookPosts() {
         return new ArrayList<>(bookPostRepository.findAll());
@@ -70,7 +73,6 @@ public class BookPostServiceImpl implements BookPostService {
         }
 
         // Update the necessary fields
-        DtoMapper mapper = new DtoMapper();
         BookPost newBookPost = mapper.toBookPost(bookPostCreationDto);
         newBookPost.setUserAuthor(getAuthenticatedUser());
         newBookPost.setDateCreated(LocalDate.now());

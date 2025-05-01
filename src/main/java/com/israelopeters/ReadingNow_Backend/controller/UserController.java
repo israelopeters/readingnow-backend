@@ -26,7 +26,7 @@ public class UserController {
     UserService userService;
 
     @Tag(name = "get", description = "All GET methods")
-    @Operation(summary = "Get all users", description = "Get all saved users")
+    @Operation(summary = "Get all users", description = "Get all persisted users")
     @ApiResponse(responseCode = "200", description = "All users found",
             content = @Content(array = @ArraySchema(schema = @Schema(implementation = UserDto.class))))
     @GetMapping("/")
