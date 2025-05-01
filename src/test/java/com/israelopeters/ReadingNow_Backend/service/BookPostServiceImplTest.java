@@ -1,10 +1,12 @@
 package com.israelopeters.ReadingNow_Backend.service;
 
 import com.israelopeters.ReadingNow_Backend.exception.BookPostNotFoundException;
+import com.israelopeters.ReadingNow_Backend.exception.InvalidBookPostException;
 import com.israelopeters.ReadingNow_Backend.exception.UserNotFoundException;
 import com.israelopeters.ReadingNow_Backend.model.BookPost;
 import com.israelopeters.ReadingNow_Backend.model.ReadingStatus;
 import com.israelopeters.ReadingNow_Backend.model.User;
+import com.israelopeters.ReadingNow_Backend.model.dto.BookPostCreationDto;
 import com.israelopeters.ReadingNow_Backend.repository.BookPostRepository;
 import com.israelopeters.ReadingNow_Backend.repository.UserRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -113,7 +115,7 @@ class BookPostServiceImplTest {
     }
 
     @Test
-    @DisplayName("getBookPostsByUser() returns a list of book posts belonging to given user")
+    @DisplayName("getBookPostsByUser() returns a list of book posts belonging to given user when the user exists")
     void getBookPostsByUser_whenUserExists_returnsListOfBookPostsByUser() {
         // Arrange
         User userOne = new User();
@@ -148,5 +150,51 @@ class BookPostServiceImplTest {
 
         // Assert
         assertEquals(bookPostListExpected, bookPostListActual);
+    }
+
+    @Test
+    @DisplayName("addBookPost() throws an InvalidBookPostException when book summary field is blank")
+    void addBookPost_whenBookSummaryFieldIsBlank_throwsInvalidBookPostException() {
+        // Arrange
+        BookPostCreationDto bookPostCreationDto = new BookPostCreationDto("image_url_one",
+                "Book Author 1",130L, " ",
+                ReadingStatus.TBR);
+
+        // Act and assert
+        assertThrows(InvalidBookPostException.class, () -> bookPostService.addBookPost(bookPostCreationDto));
+    }
+
+    @Test
+    @DisplayName("addBookPost() throws an InvalidBookPostException when book author field is blank")
+    void addBookPost_whenBookAuthorFieldIsBlank_throwsInvalidBookPostException() {
+        // Arrange
+        BookPostCreationDto bookPostCreationDto = new BookPostCreationDto("image_url_one",
+                "",130L, "I hear this is a very good book",
+                ReadingStatus.TBR);
+
+        // Act and assert
+        assertThrows(InvalidBookPostException.class, () -> bookPostService.addBookPost(bookPostCreationDto));
+    }
+
+    @Test
+    @DisplayName("addBookPost() throws an InvalidBookPostException when number of pages field is null")
+    void addBookPost_whenNumberOfPagesFieldIsNull_throwsInvalidBookPostException() {
+        // Arrange
+        BookPostCreationDto bookPostCreationDto = new BookPostCreationDto("image_url_one", " ",
+                null, "I hear this is a very good book", ReadingStatus.TBR);
+
+        // Act and assert
+        assertThrows(InvalidBookPostException.class, () -> bookPostService.addBookPost(bookPostCreationDto));
+    }
+    @Test
+    @DisplayName("addBookPost() throws an InvalidBookPostException when reading status field is null")
+    void addBookPost_whenReadingStatusFieldIsNull_throwsInvalidBookPostException() {
+        // Arrange
+        BookPostCreationDto bookPostCreationDto = new BookPostCreationDto("image_url_one",
+                "Book Author 1",130L, "I hear this is a very good book",
+                null);
+
+        // Act and assert
+        assertThrows(InvalidBookPostException.class, () -> bookPostService.addBookPost(bookPostCreationDto));
     }
 }
