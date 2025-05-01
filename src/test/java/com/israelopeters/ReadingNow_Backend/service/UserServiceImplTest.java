@@ -14,7 +14,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
@@ -28,7 +28,7 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.times;
 
-@SpringBootTest
+@DataJpaTest
 class UserServiceImplTest {
 
     @Mock
@@ -200,6 +200,7 @@ class UserServiceImplTest {
         when(userRepository.findByEmail(userCreationDto.getEmail())).thenReturn(Optional.empty());
         when(dtoMapper.toUser(userCreationDto)).thenReturn(user);
         when(passwordEncoder.encode(userCreationDto.getPassword())).thenReturn("encoded_password");
+        when(roleRepository.findByName("ROLE_USER")).thenReturn(role);
         when(roleRepository.save(role)).thenReturn(role);
         when(userRepository.save(user)).thenReturn(user);
         when(dtoMapper.toUserDto(user)).thenReturn(userDtoExpected);
