@@ -19,22 +19,16 @@ public class BookPost implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
     private String imageUrl;
 
-    @Column
     private String bookAuthor;
 
-    @Column
     private User userAuthor;
 
-    @Column
     private Long numberOfPages;
 
-    @Column
     private String bookSummary;
 
-    @Column
     private ReadingStatus readingStatus;
 
     private LocalDate dateCreated;

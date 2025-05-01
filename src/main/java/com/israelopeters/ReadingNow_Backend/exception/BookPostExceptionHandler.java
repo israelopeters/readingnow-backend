@@ -12,4 +12,9 @@ public class BookPostExceptionHandler {
     public ResponseEntity<Object> bookPostNotFoundException(BookPostNotFoundException e) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler
+    public ResponseEntity<Object> invalidBookPostException(InvalidBookPostException e) {
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+    }
 }

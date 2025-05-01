@@ -34,16 +34,14 @@ public class DtoMapper {
         return userDto;
     }
 
-    public BookPost toBookPost(BookPostDto bookPostDto) {
+    public BookPost toBookPost(BookPostCreationDto bookPostCreationDto) {
         BookPost bookPost = new BookPost();
 
-        bookPost.setImageUrl(bookPostDto.getImageUrl());
-        bookPost.setBookAuthor(bookPostDto.getBookAuthor());
-        bookPost.setUserAuthor(bookPostDto.getUserAuthor());
-        bookPost.setBookSummary(bookPostDto.getBookSummary());
-        bookPost.setReadingStatus(bookPostDto.getReadingStatus());
-        bookPost.setNumberOfPages(bookPostDto.getNumberOfPages());
-        bookPost.setDateCreated(bookPostDto.getDateCreated());
+        bookPost.setImageUrl(bookPostCreationDto.getImageUrl());
+        bookPost.setBookAuthor(bookPostCreationDto.getBookAuthor());
+        bookPost.setBookSummary(bookPostCreationDto.getBookSummary());
+        bookPost.setReadingStatus(bookPostCreationDto.getReadingStatus());
+        bookPost.setNumberOfPages(bookPostCreationDto.getNumberOfPages());
 
         return bookPost;
     }
