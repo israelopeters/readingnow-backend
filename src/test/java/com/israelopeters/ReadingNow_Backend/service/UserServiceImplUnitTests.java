@@ -29,7 +29,7 @@ import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.times;
 
 @DataJpaTest
-class UserServiceImplTest {
+class UserServiceImplUnitTests {
 
     @Mock
     UserRepository userRepository;

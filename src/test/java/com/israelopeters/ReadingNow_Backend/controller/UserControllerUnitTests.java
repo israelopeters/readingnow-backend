@@ -21,7 +21,7 @@ import static org.mockito.Mockito.when;
 
 @AutoConfigureMockMvc
 @SpringBootTest
-class UserControllerTest {
+class UserControllerUnitTests {
 
     @Mock
     private UserServiceImpl userServiceImpl;
