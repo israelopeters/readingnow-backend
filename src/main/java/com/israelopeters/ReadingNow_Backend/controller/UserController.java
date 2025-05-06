@@ -40,7 +40,7 @@ public class UserController {
             @ApiResponse(responseCode = "200", description = "User found",
                     content = @Content(array = @ArraySchema(schema = @Schema(implementation = UserDto.class)))),
             @ApiResponse(responseCode = "404", description = "User not found")})
-    @GetMapping("/email/{email}")
+    @GetMapping("/email")
     public ResponseEntity<UserDto> getUserByEmail(
             @Parameter(description = "Email of user to find", required = true)
             @RequestParam("email") String email) {
@@ -68,7 +68,7 @@ public class UserController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "User deleted"),
             @ApiResponse(responseCode = "404", description = "User not found")})
-    @DeleteMapping("/delete{id}")
+    @DeleteMapping("/delete")
     public ResponseEntity<Void> deleteUserById(
             @Parameter(description = "Id of user to delete from data store", required = true)
             @RequestParam("id") Long id) {
