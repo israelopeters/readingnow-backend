@@ -1,5 +1,5 @@
 # Reading Now API
-Reading Now is a simple Android app that lets you see the books other readers near you are reading. It uses AI to recommend a book for you based on your preferences. 
+Reading Now is a simple Android app that lets you see the books other readers are reading. It uses AI to recommend a book for you based on your preferences. 
 This backend API allows [the Android client](https://github.com/israelopeters/readingnow-frontend) access to the data store.
 
 ## MVP Features
