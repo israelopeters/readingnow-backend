@@ -10,4 +10,5 @@ public interface UserService {
     UserDto getUserByEmail(String email);
     UserDto addUser(UserCreationDto userCreationDto);
     void deleteUserById(Long id);
+    void addAdminUser();
 }

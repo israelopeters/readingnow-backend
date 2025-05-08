@@ -11,6 +11,7 @@ import com.israelopeters.ReadingNow_Backend.model.dto.UserDto;
 import com.israelopeters.ReadingNow_Backend.repository.RoleRepository;
 import com.israelopeters.ReadingNow_Backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -33,6 +34,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     PasswordEncoder passwordEncoder;
+
+    @Autowired
+    Environment env;
 
     @Override
     public List<UserDto> getAllUsers() {
@@ -108,5 +112,31 @@ public class UserServiceImpl implements UserService {
                 & !userCreationDto.getLastName().isBlank()
                 & !userCreationDto.getEmail().isBlank()
                 & !userCreationDto.getPassword().isBlank();
+    }
+
+    public void addAdminUser() {
+        User user = new User();
+        try {
+            if (userRepository.findByEmail(env.getProperty("ADMIN_USERNAME")).isPresent()) {
+                throw new UserAlreadyExistsException("Admin already exists!");
+            }
+        } catch (UserAlreadyExistsException e) {
+            return;
+        }
+        user.setEmail(env.getProperty("ADMIN_EMAIL"));
+        user.setPassword(passwordEncoder.encode(
+                env.getProperty("ADMIN_PASSWORD")));
+        user.setFirstName(env.getProperty("ADMIN_FIRSTNAME"));
+        user.setLastName(env.getProperty("ADMIN_LASTNAME"));
+
+        Role role = roleRepository.findByName("ROLE_ADMIN");
+        if (role == null) {
+            role = new Role();
+            role.setName("ROLE_ADMIN");
+            role = roleRepository.save(role);
+        }
+        user.setRoles(List.of(role));
+        user.setDateCreated(LocalDate.now());
+        userRepository.save(user);
     }
 }

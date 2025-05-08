@@ -63,6 +63,14 @@ public class UserController {
     }
 
 
+    // Endpoint to add an admin
+    @GetMapping("/admin/add")
+    public ResponseEntity<Void> createAdminUser() {
+        userService.addAdminUser();
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+
     @Tag(name = "delete", description = "All DELETE methods")
     @Operation(summary = "Delete user", description = "Delete a user by its id")
     @ApiResponses(value = {

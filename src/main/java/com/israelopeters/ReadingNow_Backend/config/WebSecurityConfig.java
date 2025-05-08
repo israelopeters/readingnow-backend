@@ -30,7 +30,7 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/api/v1/users/add", "/docs", "/swagger-ui/*",
+                        .requestMatchers("/api/v1/users/add", "/api/v1/users/admin/add", "/docs", "/swagger-ui/*",
                                 "/v3/api-docs/*", "/v3/api-docs")
                         .permitAll()
                         .requestMatchers("/users/delete*").hasRole("ADMIN")
@@ -63,5 +63,4 @@ public class WebSecurityConfig {
 
         auth.eraseCredentials(false);
     }
-
 }

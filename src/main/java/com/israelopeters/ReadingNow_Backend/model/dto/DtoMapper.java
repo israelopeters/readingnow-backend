@@ -19,7 +19,7 @@ public class DtoMapper {
                     userCreationDto.getFirstName().toLowerCase() +
                     userCreationDto.getLastName().toLowerCase());
         } else {
-            user.setUsername("@" + userCreationDto.getUsername());
+            user.setUsername("@" + userCreationDto.getUsername().toLowerCase());
         }
         return user;
     }
