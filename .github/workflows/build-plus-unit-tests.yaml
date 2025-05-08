@@ -19,5 +19,8 @@ jobs:
           cache: maven
 
       - name: Build with Maven
+        env:
+          DB_USERNAME: ${{ secrets.RN_DB_USERNAME }}
+          DB_PASSWORD: ${{ secrets.RN_DB_PASSWORD }}
         run: mvn -B package --file pom.xml
 
