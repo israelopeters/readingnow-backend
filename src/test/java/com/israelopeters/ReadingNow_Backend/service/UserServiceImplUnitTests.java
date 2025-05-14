@@ -66,9 +66,9 @@ class UserServiceImplUnitTests {
     void getAllUsers_whenUserTableIsNotEmpty_returnsListOfPersistedUsers() {
         // Arrange
         User user = new User(1L, "israel@email.com", "password", "Israel",
-                "Peters", "@israelpeters", LocalDate.now(), List.of(), List.of());
+                "Peters", "@israelpeters", "profile_pic_url", LocalDate.now(), List.of(), List.of());
         UserDto userDto = new UserDto("israel@email.com", "Israel", "Peters",
-                "@israelpeters", List.of());
+                "@israelpeters", "profile_pic_url", List.of());
 
         List<User> userListRepository = new ArrayList<>();
         userListRepository.add(user);
@@ -103,9 +103,9 @@ class UserServiceImplUnitTests {
     void getUserByEmail_whenUserIsInDataStore_returnsUserWithGivenEmail() {
         // Arrange
         User user = new User(1L, "israel@email.com", "password", "Israel",
-                "Peters", "@israelpeters", LocalDate.now(), List.of(), List.of());
+                "Peters", "@israelpeters","profile_pic_url", LocalDate.now(), List.of(), List.of());
         UserDto userDtoExpected = new UserDto("israel@email.com", "Israel", "Peters",
-                "@israelpeters", List.of());
+                "@israelpeters", "profile_pic_url", List.of());
 
         when(dtoMapper.toUserDto(user)).thenReturn(userDtoExpected);
         when(userRepository.findByEmail("israel@email.com")).thenReturn(Optional.of(user));
@@ -123,7 +123,7 @@ class UserServiceImplUnitTests {
         //Arrange
         UserCreationDto userCreationDto = new UserCreationDto(
                 "Israel", "Peters", "israel@email.com", "password",
-                "@israelpeters");
+                "@israelpeters", "profile_pic_url");
 
         when(userRepository.findByEmail(userCreationDto.getEmail()))
                 .thenThrow(new UserAlreadyExistsException("User already exists!"));
@@ -138,7 +138,7 @@ class UserServiceImplUnitTests {
         //Arrange
         UserCreationDto userCreationDto = new UserCreationDto(
                 "Israel", "Peters", "", "password",
-                "@israelpeters");
+                "@israelpeters","profile_pic_url");
 
         //Act and Assert
         assertThrows(InvalidUserException.class, () -> userServiceImpl.addUser(userCreationDto));
@@ -150,7 +150,7 @@ class UserServiceImplUnitTests {
         //Arrange
         UserCreationDto userCreationDto = new UserCreationDto(
                 "Israel", "Peters", "israel@email.com", "",
-                "@israelpeters");
+                "@israelpeters", "profile_pic_url");
 
         //Act and Assert
         assertThrows(InvalidUserException.class, () -> userServiceImpl.addUser(userCreationDto));
@@ -162,7 +162,7 @@ class UserServiceImplUnitTests {
         //Arrange
         UserCreationDto userCreationDto = new UserCreationDto(
                 " ", "Peters", "israel@email.com", "password",
-                "@israelpeters");
+                "profile_pic_url", "@israelpeters");
 
         //Act and Assert
         assertThrows(InvalidUserException.class, () -> userServiceImpl.addUser(userCreationDto));
@@ -174,7 +174,7 @@ class UserServiceImplUnitTests {
         //Arrange
         UserCreationDto userCreationDto = new UserCreationDto(
                 "Israel", " ", "israel@email.com", "password",
-                "@israelpeters");
+                "profile_pic_url", "@israelpeters");
 
         //Act and Assert
         assertThrows(InvalidUserException.class, () -> userServiceImpl.addUser(userCreationDto));
@@ -185,12 +185,12 @@ class UserServiceImplUnitTests {
     void addUser_whenUserDoesNotYetExist_returnsUserDtoObjectOfPersistedUser() {
         //Arrange
         User user = new User(1L, "israel@email.com", "password", "Israel",
-                "Peters", "@israelpeters", LocalDate.now(), List.of(), List.of());
+                "Peters", "@israelpeters", "profile_pic_url", LocalDate.now(), List.of(), List.of());
         UserCreationDto userCreationDto = new UserCreationDto(
                 "Israel", "Peters", "israel@email.com", "password",
-                "@israelpeters");
+                "profile_pic_url", "@israelpeters");
         UserDto userDtoExpected = new UserDto("israel@email.com", "Israel", "Peters",
-                "@israelpeters", List.of());
+                "@israelpeters", "profile_pic_url", List.of());
 
         Role role = new Role();
         role.setId(1L);
@@ -228,7 +228,7 @@ class UserServiceImplUnitTests {
     void deleteUser_whenUserExists_callsRepositoryDeleteMethodOnce() {
         //Arrange
         User existingUser = new User(1L, "israel@email.com", "password", "Israel",
-                "Peters", "@israelpeters", LocalDate.now(), List.of(), List.of());
+                "Peters", "@israelpeters", "profile_pic_url", LocalDate.now(), List.of(), List.of());
 
         when(userRepository.findById(1L)).thenReturn(Optional.of(existingUser));
         doNothing().when(userRepository).deleteById(isA(Long.class));

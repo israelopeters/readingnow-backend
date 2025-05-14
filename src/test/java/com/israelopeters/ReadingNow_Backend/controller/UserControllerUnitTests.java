@@ -51,9 +51,9 @@ class UserControllerUnitTests {
     void baseEndpoint_whenUserTableIsNotEmpty_ReturnsAListOfUserDtosAndOkStatusCode() throws Exception {
         // Arrange
         UserDto userDtoOne = new UserDto("israel@email.com", "Israel", "Peters",
-                "@israelpeters", List.of());
+                "@israelpeters", "profile_pic_url", List.of());
         UserDto userDtoTwo = new UserDto("human@email.com", "Human", "Being",
-                "@humanbeing", List.of());
+                "@humanbeing", "profile_pic_url", List.of());
         List<UserDto> userDtoList =  List.of(userDtoOne, userDtoTwo);
         when(userService.getAllUsers()).thenReturn(userDtoList);
 
@@ -84,7 +84,7 @@ class UserControllerUnitTests {
     void emailEndpoint_whenUserIsFound_ReturnsAUserAnd200StatusCode() throws Exception {
         // Arrange
         UserDto testUser = new UserDto("israel@email.com", "Israel", "Peters",
-                "@israelpeters", List.of());
+                "@israelpeters", "profile_pic_url", List.of());
         when(userService.getUserByEmail("israel@email.com")).thenReturn(testUser);
 
         // Act and assert
