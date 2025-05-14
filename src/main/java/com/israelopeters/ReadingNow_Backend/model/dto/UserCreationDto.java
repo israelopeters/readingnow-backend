@@ -25,5 +25,7 @@ public class UserCreationDto {
     private String password;
 
     private String username;
+
+    private String profilePicUrl;
 }
 

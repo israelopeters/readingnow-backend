@@ -22,5 +22,7 @@ public class UserDto {
 
     private String username;
 
+    private String profilePicUrl;
+
     private List<Role> roles;
 }

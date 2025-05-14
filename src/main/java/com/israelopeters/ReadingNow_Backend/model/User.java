@@ -35,6 +35,8 @@ public class User implements Serializable {
 
     private String username;
 
+    private String profilePicUrl;
+
     private LocalDate dateCreated;
 
     private List<BookPost> tbr =  new ArrayList<>();

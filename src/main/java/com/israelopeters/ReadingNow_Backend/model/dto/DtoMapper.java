@@ -13,6 +13,7 @@ public class DtoMapper {
         user.setLastName(userCreationDto.getLastName());
         user.setEmail(userCreationDto.getEmail());
         user.setPassword(userCreationDto.getPassword());
+        user.setProfilePicUrl(userCreationDto.getProfilePicUrl());
 
         if (userCreationDto.getUsername() == null) {
             user.setUsername("@" +
@@ -30,6 +31,7 @@ public class DtoMapper {
         userDto.setLastName(user.getLastName());
         userDto.setEmail(user.getEmail());
         userDto.setUsername(user.getUsername());
+        userDto.setProfilePicUrl(user.getProfilePicUrl());
         userDto.setRoles(user.getRoles());
         return userDto;
     }
